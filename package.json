@@ -291,7 +291,7 @@
       "inject"
     ]
   },
-  "lint-staged" : {
-    "**/*.{js,jsx,tsx,ts,css,scss,less,md}": "prettier --write"
+  "lint-staged": {
+    "**/*.{js,jsx,json,tsx,ts,css,scss,less,md}": "prettier --write"
   }
 }
