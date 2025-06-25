@@ -73,7 +73,8 @@
     "sbom": "npm run sbom:json && npm run sbom:xml",
     "sbom:json": "cyclonedx-npm --omit=dev --output-format=JSON --output-file=bom.json",
     "sbom:xml": " cyclonedx-npm --omit=dev --output-format=XML  --output-file=bom.xml",
-    "prepare": "husky"
+    "prepare": "husky",
+    "precommit": "lint-staged"
   },
   "jest": {
     "transform": {
@@ -289,5 +290,8 @@
       "angular",
       "inject"
     ]
+  },
+  "lint-staged" : {
+    "**/*.{js,jsx,tsx,ts,css,scss,less,md}": ["prettier --write", "git add"]
   }
 }
