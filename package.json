@@ -292,11 +292,6 @@
     ]
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "**/*.md": "prettier --write",
-    "**/*.{json,css,scss,less}": "prettier --write"
+    "**/*.{js,jsx,json,tsx,ts,css,scss,less,md}": "prettier --write"
   }
 }
