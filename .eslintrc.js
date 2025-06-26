@@ -4,43 +4,55 @@
  */
 
 module.exports = {
-  extends: 'standard-with-typescript',
   env: {
     browser: true,
     node: true,
     jasmine: true,
     mocha: true,
-    jest: true
+    jest: true,
   },
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
-  },
-  parserOptions: {
-    ecmaVersion: 2018,
-    project: './tsconfig.json'
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
   },
   ignorePatterns: [
-    '.eslintrc.js',
-    'app/private/**',
-    'vagrant/**',
-    'frontend/**',
-    'data/static/codefixes/**',
-    'dist/**'
+    ".eslintrc.js",
+    "app/private/**",
+    "vagrant/**",
+    "frontend/**",
+    "data/static/codefixes/**",
+    "dist/**",
   ],
   overrides: [
     {
-      files: ['**/*.ts'],
-      parser: '@typescript-eslint/parser',
+      files: ["**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+        project: "./tsconfig.json",
+      },
+      extends: ["standard-with-typescript"],
       rules: {
-        'no-void': 'off', // conflicting with recommendation from @typescript-eslint/no-floating-promises
-        // FIXME warnings below this line need to be checked and fixed.
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/strict-boolean-expressions': 'off',
-        '@typescript-eslint/no-var-requires': 'off',
-        '@typescript-eslint/no-misused-promises': 'off',
-        '@typescript-eslint/no-unsafe-argument': 'off'
-      }
-    }
-  ]
-}
+        "no-void": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+      },
+    },
+    {
+      files: ["**/*.js"],
+      excludedFiles: ["**/*.ts"],
+      parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+      },
+      extends: ["standard"], // Без TypeScript!
+      rules: {
+        // Здесь можно добавлять JS-специфические правила
+      },
+    },
+  ],
+};
