@@ -306,6 +306,6 @@
     "*.css": [
       "stylelint --fix"
     ],
-    "*": "gitleaks protect --staged"
+    "*": "\"./gitleaks.exe\" protect --staged"
   }
 }
