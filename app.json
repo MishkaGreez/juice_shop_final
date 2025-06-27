@@ -22,6 +22,5 @@
   "logo": "https://raw.githubusercontent.com/juice-shop/juice-shop/master/frontend/src/assets/public/images/JuiceShop_Logo.png",
   "engines": {
     "node": "20.x"
-  },
-  "API_KEY": "VSGBhdyhsbdjbhHVGSVCGVhchvchsbvjhbjHBJDGS1234jHBVHDbh"
+  }
 }
