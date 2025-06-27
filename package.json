@@ -75,7 +75,8 @@
     "sbom:xml": " cyclonedx-npm --omit=dev --output-format=XML  --output-file=bom.xml",
     "prepare": "husky",
     "precommit": "lint-staged",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "gitleaks:staged": ".\\gitleaks.exe git --staged --verbose"
   },
   "jest": {
     "transform": {
@@ -305,9 +306,6 @@
     ],
     "*.css": [
       "stylelint --fix"
-    ],
-    "*": [
-      ".\\gitleaks.exe protect --staged --source ."
     ]
   }
 }

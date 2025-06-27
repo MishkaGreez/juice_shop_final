@@ -6,5 +6,8 @@ param (
 # Добавление всех изменений
 git add .
 
+#test secret
+npm run gitleaks:staged
+
 # Коммит с переданным сообщением
 git commit -m "$CommitMessage"
