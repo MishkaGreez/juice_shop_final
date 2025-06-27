@@ -1,0 +1,28 @@
+{
+  "severities": [
+    {
+      "id": 1,
+      "severity": "MEDIUM"
+    },
+    {
+      "id": 2,
+      "severity": "INFO"
+    },
+    {
+      "id": 3,
+      "severity": "LOW"
+    },
+    {
+      "id": 4,
+      "severity": "HIGH"
+    },
+    {
+      "id": 5,
+      "severity": "CRITICAL"
+    },
+    {
+      "id": 6,
+      "severity": "TRACE"
+    }
+  ]
+}

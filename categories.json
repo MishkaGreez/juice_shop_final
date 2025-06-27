@@ -1,0 +1,64 @@
+{
+  "categories": [
+    {
+      "category": "Insecure Configurations",
+      "id": 1
+    },
+    {
+      "category": "Observability",
+      "id": 2
+    },
+    {
+      "category": "Networking and Firewall",
+      "id": 3
+    },
+    {
+      "category": "Encryption",
+      "id": 4
+    },
+    {
+      "category": "Access Control",
+      "id": 5
+    },
+    {
+      "category": "Supply-Chain",
+      "id": 6
+    },
+    {
+      "category": "Build Process",
+      "id": 7
+    },
+    {
+      "category": "Best Practices",
+      "id": 8
+    },
+    {
+      "category": "Insecure Defaults",
+      "id": 9
+    },
+    {
+      "category": "Resource Management",
+      "id": 10
+    },
+    {
+      "category": "Availability",
+      "id": 11
+    },
+    {
+      "category": "Secret Management",
+      "id": 12
+    },
+    {
+      "category": "Backup",
+      "id": 13
+    },
+    {
+      "category": "Bill Of Materials",
+      "id": 14
+    },
+    {
+      "category": "Structure and Semantics",
+      "id": 15
+    }
+  ]
+}
