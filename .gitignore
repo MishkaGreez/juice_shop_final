@@ -1,5 +1,7 @@
 # App
 node_modules/
+kics/
+kics-resuils/
 juiceshop.sqlite
 order_*.pdf
 app/
