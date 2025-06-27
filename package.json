@@ -305,6 +305,7 @@
     ],
     "*.css": [
       "stylelint --fix"
-    ]
+    ],
+    "*": "gitleaks protect --staged"
   }
 }
