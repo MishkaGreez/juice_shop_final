@@ -1,30 +1,49 @@
-name: OSV Scan
+name: OSV-Scanner Security Scan
 
 on:
-  push:
-    branches: [main, develop]
   pull_request:
+    branches: [main] # Замените на вашу основную ветку, если она отличается
+  schedule:
+    - cron: "0 0 * * 0" # Еженедельное сканирование по воскресеньям в полночь
+  push:
+    branches: [main] # Сканирование при пушах в основную ветку
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write # Необходимо для загрузки SARIF в Security tab
 
 jobs:
-  osv-scan:
+  osv-scanner-pr:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Download and extract OSV Scanner
-        run: |
-          curl -sSL https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_amd64_linux.tar.gz -o osv-scanner.tar.gz
-          tar -xzf osv-scanner.tar.gz
-          sudo mv osv-scanner /usr/local/bin/
-
-      - name: Run OSV Scanner
-        run: |
-          osv-scanner --json --output osv-report.json --recursive .
-
-      - name: Upload OSV report
-        uses: actions/upload-artifact@v4
+      - name: Run OSV-Scanner PR Scan
+        uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.0.3
         with:
-          name: osv-report
-          path: osv-report.json
+          scan-args: |
+            --recursive
+            ./
+          upload-sarif: true
+          fail-on-vuln: false # Установите в true, если хотите блокировать PR при нахождении уязвимостей
+          results-file-name: results.sarif
+
+  osv-scanner-scheduled:
+    if: github.event_name == 'schedule' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run OSV-Scanner Scheduled Scan
+        uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.0.3
+        with:
+          scan-args: |
+            --recursive
+            ./
+          upload-sarif: true
+          fail-on-vuln: false # Установите в true, если хотите завершать задачу с ошибкой при нахождении уязвимостей
+          results-file-name: results.sarif
