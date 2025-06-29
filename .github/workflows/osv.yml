@@ -14,36 +14,30 @@ permissions:
   security-events: write # Необходимо для загрузки SARIF в Security tab
 
 jobs:
-  osv-scanner-pr:
-    if: github.event_name == 'pull_request'
+  osv-scanner:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run OSV-Scanner PR Scan
-        uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.0.3
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          scan-args: |
-            --recursive
+          go-version: "1.22" # OSV-Scanner требует Go, указываем стабильную версию
+
+      - name: Install OSV-Scanner
+        run: go install github.com/google/osv-scanner/cmd/osv-scanner@v1
+
+      - name: Run OSV-Scanner
+        run: |
+          osv-scanner \
+            --recursive \
+            --format sarif \
+            --output results.sarif \
             ./
-          upload-sarif: true
-          fail-on-vuln: false # Установите в true, если хотите блокировать PR при нахождении уязвимостей
-          results-file-name: results.sarif
 
-  osv-scanner-scheduled:
-    if: github.event_name == 'schedule' || github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run OSV-Scanner Scheduled Scan
-        uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.0.3
+      - name: Upload SARIF file
+        if: always() # Загружаем результаты даже при ошибке
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          scan-args: |
-            --recursive
-            ./
-          upload-sarif: true
-          fail-on-vuln: false # Установите в true, если хотите завершать задачу с ошибкой при нахождении уязвимостей
-          results-file-name: results.sarif
+          sarif_file: results.sarif
