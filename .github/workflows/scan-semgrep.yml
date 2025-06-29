@@ -26,12 +26,3 @@ jobs:
           config: >-
             p/default
             p/security-audit
-          # Формат вывода (SARIF для интеграции с GitHub)
-          output-format: sarif
-          output-file: semgrep-results.sarif
-
-      # Шаг 3: Загрузить результаты в GitHub Security Tab
-      - name: Upload SARIF report
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: semgrep-results.sarif
