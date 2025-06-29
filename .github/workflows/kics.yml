@@ -15,16 +15,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies (curl, tar)
-        run: sudo apt-get update && sudo apt-get install -y curl tar
+      - name: Install dependencies (curl, jq, tar)
+        run: sudo apt-get update && sudo apt-get install -y curl jq tar
 
       - name: Download and install latest KICS
         run: |
           echo "🔍 Getting latest KICS release..."
           LATEST_URL=$(curl -s https://api.github.com/repos/Checkmarx/kics/releases/latest \
-            | grep "browser_download_url" \
-            | grep "linux_x64.tar.gz" \
-            | cut -d '"' -f 4)
+            | jq -r '.assets[] | select(.name | test("linux_x64.tar.gz$")) | .browser_download_url')
+
+          if [ -z "$LATEST_URL" ]; then
+            echo "❌ Failed to get KICS download URL"
+            exit 1
+          fi
 
           echo "⬇️ Downloading from $LATEST_URL"
           curl -sSL "$LATEST_URL" -o kics.tar.gz
