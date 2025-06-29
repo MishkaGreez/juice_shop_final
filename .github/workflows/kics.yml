@@ -1,0 +1,21 @@
+name: KICS Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  kics-scan:
+    name: Run KICS
+    runs-on: windows-latest # Или ubuntu-latest/macos-latest, в зависимости от вашего kics.exe
+
+    steps:
+      # Шаг 1: Получить код (включая папку kics)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Шаг 2: Запустить локальный KICS
+      - name: Run KICS
+        run: .\kics\bin\kics.exe scan -p .
