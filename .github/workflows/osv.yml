@@ -13,15 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install OSV Scanner
+      - name: Download and extract OSV Scanner
         run: |
-          curl -LO https://github.com/google/osv-scanner/releases/latest/download/osv-scanner-linux-amd64
-          chmod +x osv-scanner-linux-amd64
-          sudo mv osv-scanner-linux-amd64 /usr/local/bin/osv-scanner
+          curl -sSL https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_amd64_linux.tar.gz -o osv-scanner.tar.gz
+          tar -xzf osv-scanner.tar.gz
+          sudo mv osv-scanner /usr/local/bin/
 
       - name: Run OSV Scanner
         run: |
-          osv-scanner ./ --json --output osv-report.json
+          osv-scanner --json --output osv-report.json --recursive .
 
       - name: Upload OSV report
         uses: actions/upload-artifact@v4
