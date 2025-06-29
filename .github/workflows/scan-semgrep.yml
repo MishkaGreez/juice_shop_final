@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0 # Необходимо для анализа изменений в PR
 
       - name: Run Semgrep
-        uses: semgrep/semgrep@v2
+        uses: semgrep/semgrep@v1
         with:
           config: p/security # Используем набор правил для безопасности
           generate-sarif: true # Генерируем SARIF для загрузки в GitHub
