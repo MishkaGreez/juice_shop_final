@@ -1,0 +1,41 @@
+name: Security Scan with Retire.js
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 1" # Еженедельно (в понедельник в 00:00)
+
+jobs:
+  retire-scan:
+    name: Run Retire.js
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Получение кода
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Шаг 2: Установка Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Шаг 3: Установка Retire.js глобально
+      - name: Install Retire.js
+        run: npm install -g retire
+
+      # Шаг 4: Запуск сканирования
+      - name: Run Retire.js scan
+        run: retire --outputformat text --exitwith 0
+        continue-on-error: true # Не останавливать workflow при нахождении уязвимостей
+
+      # Шаг 5 (опционально): Отправка отчёта в Security tab
+      - name: Upload SARIF report
+        if: always() # Загружать отчёт даже при ошибках
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: retire-report.sarif
