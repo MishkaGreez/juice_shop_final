@@ -6,18 +6,16 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 0 * * 1" # Еженедельный запуск (понедельник в 00:00)
+    - cron: "0 0 * * 1" # понедельник в 00:00 (UTC)
 
 jobs:
   semgrep-scan:
     name: Run Semgrep
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Получить код из репозитория
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Шаг 2: Запуск Semgrep (официальное действие)
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
