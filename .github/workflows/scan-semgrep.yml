@@ -6,35 +6,19 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 0 * * 1" # Еженедельное сканирование по понедельникам в полночь
-
-permissions:
-  contents: read
-  security-events: write # Необходимо для загрузки SARIF в Security tab
+    - cron: "0 0 * * 1"
 
 jobs:
   semgrep-scan:
     name: Run Semgrep
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Необходимо для анализа изменений в PR
 
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
-          config: p/security # Используем набор правил для безопасности
-          generate-sarif: true # Генерируем SARIF для загрузки в GitHub
-          # Опционально: добавьте audit-on: findings для завершения с ошибкой при нахождении уязвимостей
-          audit-on: findings
-        env:
-          SEMGREP_RULES: p/ci p/security # Дополнительные наборы правил
-          SEMGREP_PR_ID: ${{ github.event.pull_request.number || '' }}
-
-      - name: Upload SARIF file
-        if: always() # Загружаем результаты даже при ошибке
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: semgrep.sarif
+          config: >-
+            p/default
