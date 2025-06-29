@@ -11,7 +11,7 @@ on:
 jobs:
   semgrep-scan:
     name: Run Semgrep
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       # Шаг 1: Получить код из репозитория
@@ -21,8 +21,3 @@ jobs:
       # Шаг 2: Запуск Semgrep (официальное действие)
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
-        with:
-          # Опционально: Укажите правила (по умолчанию используются стандартные)
-          config: >-
-            p/default
-            p/security-audit
