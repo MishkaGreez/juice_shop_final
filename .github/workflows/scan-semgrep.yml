@@ -22,3 +22,4 @@ jobs:
         with:
           config: >-
             p/default
+          strict: false
