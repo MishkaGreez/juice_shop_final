@@ -11,7 +11,7 @@ on:
 jobs:
   semgrep-scan:
     name: Run Semgrep
-    runs-on: windows-latest
+    runs-on: linux-latest
 
     steps:
       # Шаг 1: Получить код из репозитория
