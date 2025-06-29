@@ -33,9 +33,3 @@ jobs:
         run: retire --outputformat text --exitwith 0
         continue-on-error: true # Не останавливать workflow при нахождении уязвимостей
 
-      # Шаг 5 (опционально): Отправка отчёта в Security tab
-      - name: Upload SARIF report
-        if: always() # Загружать отчёт даже при ошибках
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: retire-report.sarif
