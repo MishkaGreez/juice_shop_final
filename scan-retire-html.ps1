@@ -10,7 +10,7 @@ if (-not (Get-Command "retire" -ErrorAction SilentlyContinue)) {
 
 # Временный JSON-файл
 $tempJson = [System.IO.Path]::GetTempFileName()
-retire --outputformat json > $tempJson
+retire --verbose --outputformat json > $tempJson
 
 # Прочитать как строку
 $jsonRaw = Get-Content $tempJson -Raw

@@ -1,0 +1,1 @@
+osv-scanner scan image bkimminich/juice-shop:latest --output=results/test.html --format=html

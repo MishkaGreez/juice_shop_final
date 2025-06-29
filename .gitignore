@@ -2,6 +2,13 @@
 node_modules/
 kics/
 kics-resuils/
+ZAP_D-2025-06-24/
+results/
+.hasky/
+commit.ps1/
+osv.ps1/
+sca.ps1/
+scan-retire-html.ps1/
 juiceshop.sqlite
 order_*.pdf
 app/
