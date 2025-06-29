@@ -15,29 +15,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Go (required for KICS CLI)
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.21"
+      - name: Install dependencies (curl, tar)
+        run: sudo apt-get update && sudo apt-get install -y curl tar
 
-      - name: Install KICS CLI
+      - name: Download and install latest KICS
         run: |
-          curl -sSL https://github.com/Checkmarx/kics/releases/latest/download/kics_linux_x64.tar.gz -o kics.tar.gz
-          mkdir -p kics
-          tar -xzf kics.tar.gz -C kics
-          sudo mv kics/kics /usr/local/bin/kics
+          echo "🔍 Getting latest KICS release..."
+          LATEST_URL=$(curl -s https://api.github.com/repos/Checkmarx/kics/releases/latest \
+            | grep "browser_download_url" \
+            | grep "linux_x64.tar.gz" \
+            | cut -d '"' -f 4)
+
+          echo "⬇️ Downloading from $LATEST_URL"
+          curl -sSL "$LATEST_URL" -o kics.tar.gz
+
+          mkdir -p kics-bin
+          tar -xzf kics.tar.gz -C kics-bin
+          sudo mv kics-bin/kics /usr/local/bin/kics
           kics version
 
       - name: Run KICS scan
         run: |
           mkdir -p kics-results
           kics scan -p . \
+            --no-progress \
             --output-path kics-results \
             --output-name result \
             --output-formats json,html \
-            --no-progress
+            --fail-on high
 
-      - name: Upload KICS report artifact
+      - name: Upload KICS reports
         uses: actions/upload-artifact@v4
         with:
           name: kics-report
