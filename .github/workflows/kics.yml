@@ -1,0 +1,44 @@
+name: KICS Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  kics-scan:
+    name: Run KICS Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go (required for KICS CLI)
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Install KICS CLI
+        run: |
+          curl -sSL https://github.com/Checkmarx/kics/releases/latest/download/kics_linux_x64.tar.gz -o kics.tar.gz
+          mkdir -p kics
+          tar -xzf kics.tar.gz -C kics
+          sudo mv kics/kics /usr/local/bin/kics
+          kics version
+
+      - name: Run KICS scan
+        run: |
+          mkdir -p kics-results
+          kics scan -p . \
+            --output-path kics-results \
+            --output-name result \
+            --output-formats json,html \
+            --no-progress
+
+      - name: Upload KICS report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kics-report
+          path: kics-results/
